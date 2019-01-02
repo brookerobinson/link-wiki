@@ -1,0 +1,17 @@
+.Table table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%
+}
+  
+.Table th {
+    border: 1px solid black;
+    text-align: center;
+  }
+
+.Table td {
+    border: 1px solid black;
+    width: 100%;
+    text-align: left;
+  }
+
