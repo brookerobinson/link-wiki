@@ -1,0 +1,60 @@
+.Table table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%
+}
+  
+.Table th {
+    border: 1px solid black;
+    text-align: center;
+  }
+
+.Table td {
+    border: 1px solid black;
+    width: 100%;
+    text-align: left;
+  }
+
+.AddLink {
+    margin: 20px auto;
+    width: 80%;
+    text-align: center;
+    box-shadow: 0 2px 3px #ccc;
+    border: 1px solid #eee;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.Input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.InputElement {
+    outline: none;
+    border: 1px solid #ccc;
+    background-color: white;
+    font: inherit;
+    padding: 6px 10px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.InputElement:focus {
+    outline: none;
+    background-color: #ccc;
+}
+
+.Label {
+    font-weight: bold;
+    display: block;
+    margin: 8px;
+}
+
+@media (min-width: 600px) {
+    .AddLink {
+        width: 500px;
+    }
+}
