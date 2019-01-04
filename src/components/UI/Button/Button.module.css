@@ -24,6 +24,14 @@
     color: #5C9210;
 }
 
-.Danger {
+.Cancel {
+    color: #944317;
+}
+
+.Edit {
+    color: #5C9210;
+}
+
+.Delete {
     color: #944317;
 }
