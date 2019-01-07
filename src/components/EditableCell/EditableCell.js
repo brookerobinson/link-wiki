@@ -4,9 +4,9 @@ const editableCell = (props) => (
         <td>
             <input
                 type='text'
-                name={props.cellData.type}
-                id={props.cellData.id}
-                value={props.cellData.value}
+                // name={props.cellData.type}
+                // id={props.cellData.id}
+                value={props.value}
                 onChange={props.onEditLink} />
         </td>
 );

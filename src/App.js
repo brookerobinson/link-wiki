@@ -13,9 +13,9 @@ import { checkValidity, updateObject } from './shared/utility';
 class App extends Component {
   state = {
     links: [
-      { id: 1, name: "Link 1", url: "URL 1", details: "This is Link 1", dateCreated: "Today", dateModified: "" },
-      { id: 2, name: "Link 2", url: "URL 2", details: "This is Link 2", dateCreated: "Today", dateModified: "" },
-      { id: 3, name: "Link 3", url: "URL 3", details: "This is Link 3", dateCreated: "Today", dateModified: "" },
+      { id: 1, name: "Link 1", url: "URL 1", details: "This is Link 1", dateCreated: "Today", dateModified: "Today", editMode: false },
+      { id: 2, name: "Link 2", url: "URL 2", details: "This is Link 2", dateCreated: "Today", dateModified: "Today", editMode: false },
+      { id: 3, name: "Link 3", url: "URL 3", details: "This is Link 3", dateCreated: "Today", dateModified: "Today", editMode: false },
     ],
     addLinkForm: {
       name: {
@@ -87,14 +87,15 @@ class App extends Component {
 
     today = dd + '/' + mm + '/' + yyyy;
 
-    const id = (+ new Date() + Math.floor(Math.random() * 999999)).toString(36);
+    // const id = (+ new Date() + Math.floor(Math.random() * 999999)).toString(36);
 
     const formData = {};
-    
+
     for (let formElementIdentifier in this.state.addLinkForm) {
       formData[formElementIdentifier] = this.state.addLinkForm[formElementIdentifier].value;
-      formData.id = id;
+      // formData.id = id;
       formData.dateCreated = today;
+      formData.dateModified = today;
     }
 
     console.log('form data: ', formData)
@@ -146,23 +147,24 @@ class App extends Component {
   }
 
   editLinkHandler = (event) => {
-    // var item = {
-    //   value: event.target.value
-    // };
-    // var links = this.state.links.slice();
-    // var newLinks = links.map(function (link) {
-
-    //   for (var key in link) {
-    //     if (key === item.name && link.id === item.id) {
-    //       link[key] = item.value;
-
-    //     }
-    //   }
-    //   return link;
-    // });
-    // this.setState({ links: newLinks });
-
-    console.log(event);
+    const cell = {
+      //name: event.target.name,
+      value: event.target.value
+    };
+    console.log('cell: ', cell);
+    const links = this.state.links;
+    console.log('links: ', links);
+    const newLinks = links.map(function (link) {
+    
+      for (let key in link) {
+        if (key === 'name') {
+          link[key] = cell.value;
+        }
+      }
+      return link;
+    });
+    console.log('new links: ', newLinks);
+    this.setState({ links: newLinks });
 
     // this.setState( {
     //   links: [
@@ -171,7 +173,19 @@ class App extends Component {
     // } )
   }
 
-  editModeHandler = () => {
+  // editModeHandler = () => {
+  //   this.setState({ editMode: !this.state.editMode });
+  // }
+
+  editModeHandler = (index) => {
+    const links = this.state.links;
+    console.log('Original Links ', links);
+
+    const thisLink = links[index];
+    console.log('thisLink: ', thisLink);
+
+    // now we need to change the edit mode state of this particular link!!! and then render conditionally
+
     this.setState({ editMode: !this.state.editMode });
   }
 
@@ -245,7 +259,7 @@ class App extends Component {
           {/* {table} */}
           <Table
             deleteClicked={(index) => this.deleteLinkHandler(index)}
-            editClicked={this.editModeHandler}
+            editClicked={(index) => this.editModeHandler(index)}
             editMode={this.state.editMode}
             links={this.state.links}
             onEditLink={this.editLinkHandler} />

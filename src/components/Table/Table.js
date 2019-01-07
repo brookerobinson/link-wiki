@@ -14,20 +14,22 @@ const table = (props) => {
                     <th>URL</th>
                     <th>Details</th>
                     <th>Date Created</th>
-                    <th>Date Modified</th>
+                    <th>Date Last Modified</th>
                 </tr>
             </thead>
             <tbody>
                 {
                     links.map((link, index) => {
+                        // console.log(links);
                         return (
                             <TableRow key={index}
                                 link={link} 
                                 index={index}
                                 editMode={props.editMode}  
                                 deleteClicked={() => props.deleteClicked(index)}
-                                editClicked={props.editClicked}
-                                onEditLink={props.onEditLink}/>
+                                editClicked={() => props.editClicked(index)}
+                                onEditLink={props.onEditLink}
+                                />
                         );
                     })
                 }
