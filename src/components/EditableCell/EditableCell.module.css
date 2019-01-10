@@ -1,0 +1,23 @@
+.EditableCell {
+    border: 1px solid black;
+    width: 100%;
+    text-align: left;
+}
+
+.EditableCell input {
+    outline: none;
+    border: none;
+    background-color:rgb(235, 235, 235);
+    font: inherit;
+    padding: 6px 10px;
+    margin-left: 2px;
+    margin-right: 2px;
+    display: block;
+    width: 98%;
+    box-sizing: border-box;
+}
+
+.EditableCell input:focus {
+    outline: none;
+    background-color: #ccc;
+}

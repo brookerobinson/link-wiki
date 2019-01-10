@@ -2,13 +2,27 @@ import React, { Component } from 'react';
 import classes from './App.module.css';
 
 import Button from './components/UI/Button/Button';
-// import Input from './components/UI/Input/Input';
 import Aux from './hoc/Auxiliary/Auxiliary';
 import Modal from './components/UI/Modal/Modal';
 import Table from './components/Table/Table';
 import AddLink from './components/AddLink/AddLink';
 
 import { checkValidity, updateObject } from './shared/utility';
+
+let today = new Date();
+  let dd = today.getDate();
+  let mm = today.getMonth() + 1; //January is 0!
+  const yyyy = today.getFullYear();
+
+  if (dd < 10) {
+    dd = '0' + dd
+  }
+
+  if (mm < 10) {
+    mm = '0' + mm
+  }
+
+  today = dd + '/' + mm + '/' + yyyy;
 
 class App extends Component {
   state = {
@@ -63,67 +77,42 @@ class App extends Component {
     editMode: false
   }
 
-  deleteLinkHandler = (index) => {
-    const updatedLinks = this.state.links;
-    updatedLinks.splice(index, 1);
-    this.setState({ links: updatedLinks })
+  startAddingHandler = () => {
+    this.setState({ addingLink: true });
   }
 
   addLinkHandler = (event) => {
     event.preventDefault();
 
-    let today = new Date();
-    let dd = today.getDate();
-    let mm = today.getMonth() + 1; //January is 0!
-    const yyyy = today.getFullYear();
-
-    if (dd < 10) {
-      dd = '0' + dd
-    }
-
-    if (mm < 10) {
-      mm = '0' + mm
-    }
-
-    today = dd + '/' + mm + '/' + yyyy;
-
-    // const id = (+ new Date() + Math.floor(Math.random() * 999999)).toString(36);
+    const id = (+ new Date() + Math.floor(Math.random() * 999999)).toString(36);
 
     const formData = {};
+    const addLinkForm = { ...this.state.addLinkForm }
 
-    for (let formElementIdentifier in this.state.addLinkForm) {
-      formData[formElementIdentifier] = this.state.addLinkForm[formElementIdentifier].value;
-      // formData.id = id;
-      formData.dateCreated = today;
-      formData.dateModified = today;
+    for (let formElementIdentifier in addLinkForm) {
+      formData[formElementIdentifier] = addLinkForm[formElementIdentifier].value;
     }
 
     console.log('form data: ', formData)
 
-    const updatedLinks = this.state.links;
-    updatedLinks.push(formData);
+    const newLinkData = {
+      id: id,
+      dateCreated: today,
+      dateModified: today,
+      editMode: false
+    }
 
-    this.setState({ links: updatedLinks, addingLink: false })
+    Object.assign(newLinkData, formData);
+
+    const updatedLinks = [...this.state.links];
+    updatedLinks.push(newLinkData);
+
+    console.log('[Add Link] Updated Links: ', updatedLinks);
+
+    this.setState({ links: updatedLinks, addingLink: false });
   }
 
   cancelLinkHandler = () => {
-    // Clear the form when not in use
-    // const updatedNameElement = updateObject(this.state.addLinkForm.name, {
-    //   value: ''
-    // });
-    // const updatedUrlElement = updateObject(this.state.addLinkForm.url, {
-    //   value: ''
-    // });
-    // const updatedDetailsElement = updateObject(this.state.addLinkForm.details, {
-    //   value: ''
-    // });
-
-    // const updatedaddLinkForm = updateObject(this.state.addLinkForm, {
-    //   name: updatedNameElement,
-    //   url: updatedUrlElement,
-    //   details: updatedDetailsElement
-    // });
-    // this.setState({addingLink: false, addLinkForm: updatedaddLinkForm});
     this.setState({ addingLink: false });
   }
 
@@ -148,115 +137,62 @@ class App extends Component {
 
   editLinkHandler = (event) => {
     const cell = {
-      //name: event.target.name,
-      value: event.target.value
+      name: event.target.name,
+      value: event.target.value,
+      id: event.target.id
     };
-    console.log('cell: ', cell);
+    //console.log('cell: ', cell);
     const links = this.state.links;
-    console.log('links: ', links);
+    //console.log('links: ', links);
     const newLinks = links.map(function (link) {
-    
+
       for (let key in link) {
-        if (key === 'name') {
+        if (key === cell.name && link.id.toString() === cell.id) {
           link[key] = cell.value;
+          link.dateModified = today;
         }
       }
       return link;
-    });
-    console.log('new links: ', newLinks);
-    this.setState({ links: newLinks });
 
-    // this.setState( {
-    //   links: [
-    //     { name: event.target.value }
-    //   ]
-    // } )
+    });
+
+    this.setState({ links: newLinks });
   }
 
-  // editModeHandler = () => {
-  //   this.setState({ editMode: !this.state.editMode });
-  // }
-
   editModeHandler = (index) => {
-    const links = this.state.links;
-    console.log('Original Links ', links);
+    let newLinks = [...this.state.links];
 
-    const thisLink = links[index];
-    console.log('thisLink: ', thisLink);
+    for (let linkIndex in newLinks) {
+      if (linkIndex === index.toString()) {
+        newLinks[index].editMode = !newLinks[index].editMode;
+      }
+    }
+    this.setState({ links: newLinks });
+  }
 
-    // now we need to change the edit mode state of this particular link!!! and then render conditionally
-
-    this.setState({ editMode: !this.state.editMode });
+  deleteLinkHandler = (index) => {
+    const updatedLinks = this.state.links;
+    updatedLinks.splice(index, 1);
+    this.setState({ links: updatedLinks })
   }
 
   render() {
-    // const formElementsArray = [];
-    // for (let key in this.state.addLinkForm) {
-    //   formElementsArray.push({
-    //     id: key,
-    //     config: this.state.addLinkForm[key],
-    //   })
-    // }
-    // let form = (
-    //   <div>
-    //     {formElementsArray.map(formElement => (
-    //       <Input
-    //         key={formElement.id}
-    //         elementType={formElement.config.elementType}
-    //         elementConfig={formElement.config.elementConfig}
-    //         value={formElement.config.value}
-    //         changed={(event) => this.inputChangedHandler(event, formElement.id)}
-    //         invalid={!formElement.config.valid}
-    //         shouldValidate={formElement.config.validation}
-    //         touched={formElement.config.touched}
-    //         valueType={formElement.id} />
-    //     ))}
-    //     <Button btnType='Continue' disabled={!this.state.formIsValid} clicked={this.addLinkHandler}>ADD LINK</Button>
-    //     <Button btnType='Cancel' clicked={this.cancelLinkHandler}>CANCEL</Button>
-    //   </div>
-    // );
-
-    // let table = (
-    //   <div className={classes.Table}>
-    //         <table>
-    //           <thead>
-    //             <tr>
-    //               <th>Link Name</th>
-    //               <th>URL</th>
-    //               <th>Details</th>
-    //               <th>Date Created</th>
-    //               <th>Date Modified</th>
-    //             </tr>
-    //           </thead>
-    //           <tbody>
-    //             {
-    //               this.state.links.map((link, index) => {
-    //                 return (
-    //                   <tr key={index}>
-    //                     <td>{link.name}</td>
-    //                     <td>{link.url}</td>
-    //                     <td>{link.details}</td>
-    //                     <td>{link.dateCreated}</td>
-    //                     <td>{link.dateModified}</td>
-    //                     <td><Button btnType='Continue'>Edit</Button></td>
-    //                     <td><Button btnType='Danger' clicked={() => this.deleteLinkHandler(index)}>Delete</Button></td>
-    //                   </tr>
-    //                 );
-    //               })
-    //             }
-    //           </tbody>
-    //         </table>
-    //       </div>
-    // );
-
+    let addLink = null;
+    if (this.state.addingLink) {
+      addLink = <AddLink
+        addLinkForm={this.state.addLinkForm}
+        inputChanged={(event, id) => this.inputChangedHandler(event, id)}
+        formInvalid={!this.state.formIsValid}
+        continued={this.addLinkHandler}
+        cancelled={this.cancelLinkHandler} />
+    }
 
     return (
       <Aux>
         <div className={classes.App}>
           <h1>This is my Link Wiki App</h1>
-          <Button btnType='Continue' clicked={() => this.setState({ addingLink: true })}>ADD LINK</Button>
+          <Button btnType='Continue' clicked={this.startAddingHandler}>ADD LINK</Button>
           <h2>My links</h2>
-          {/* {table} */}
           <Table
             deleteClicked={(index) => this.deleteLinkHandler(index)}
             editClicked={(index) => this.editModeHandler(index)}
@@ -267,12 +203,7 @@ class App extends Component {
         <Modal
           show={this.state.addingLink}
           modalClosed={this.cancelLinkHandler}>
-          <AddLink
-            addLinkForm={this.state.addLinkForm}
-            inputChanged={(event, id) => this.inputChangedHandler(event, id)}
-            formInvalid={!this.state.formIsValid}
-            continued={this.addLinkHandler}
-            cancelled={this.cancelLinkHandler} />
+          {addLink}
         </Modal>
       </Aux>
     );

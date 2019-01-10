@@ -1,4 +1,6 @@
 .TableCell {
+    padding-left: 10px;
+    padding-right: 10px;
     border: 1px solid black;
     width: 100%;
     text-align: left;
