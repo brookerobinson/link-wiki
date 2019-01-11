@@ -27,9 +27,9 @@ let today = new Date();
 class App extends Component {
   state = {
     links: [
-      { id: 1, name: "Link 1", url: "URL 1", details: "This is Link 1", dateCreated: "Today", dateModified: "Today", editMode: false },
-      { id: 2, name: "Link 2", url: "URL 2", details: "This is Link 2", dateCreated: "Today", dateModified: "Today", editMode: false },
-      { id: 3, name: "Link 3", url: "URL 3", details: "This is Link 3", dateCreated: "Today", dateModified: "Today", editMode: false },
+      { id: 1, name: "Link 1", url: "www.google.com", details: "This is Link 1", dateCreated: "Today", dateModified: "Today", editMode: false },
+      { id: 2, name: "Link 2", url: "www.facebook.com", details: "This is Link 2", dateCreated: "Today", dateModified: "Today", editMode: false },
+      { id: 3, name: "Link 3", url: "www.youtube.com", details: "This is Link 3", dateCreated: "Today", dateModified: "Today", editMode: false },
     ],
     addLinkForm: {
       name: {

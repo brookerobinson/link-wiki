@@ -11,7 +11,7 @@ const tableRow = (props) => {
         return (
             <tr key={props.index}>
                 <TableCell cellClass='TableCell'>{link.name}</TableCell>
-                <TableCell cellClass='TableCell'>{link.url}</TableCell>
+                <TableCell cellClass='TableCell'><a href={'https://' + link.url} target="_blank" rel="noopener noreferrer">{link.url}</a></TableCell>
                 <TableCell cellClass='TableCell'>{link.details}</TableCell>
                 <TableCell cellClass='TableCell'>{link.dateCreated}</TableCell>
                 <TableCell cellClass='TableCell'>{link.dateModified}</TableCell>

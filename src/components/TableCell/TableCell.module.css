@@ -11,3 +11,12 @@
     width: 100%;
     text-align: center;
 }
+
+.TableCell a:link {
+    text-decoration: none;
+    color: black;
+}
+
+.TableCell a:hover {
+    text-decoration: underline;
+}
